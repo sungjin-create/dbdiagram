@@ -16,6 +16,7 @@ SQL Editor에서 아래 파일을 순서대로 한 번씩 실행합니다.
 
 1. `supabase/migrations/202611060001_diagrams.sql` — 이미 실행했다면 건너뜁니다.
 2. `supabase/migrations/202611060002_cloud_library.sql` — 폴더·사용자별 저장·충돌 방지 함수 추가.
+3. `supabase/migrations/202611060003_security.sql` — 로그인 계정 변경 중 잘못된 저장 차단, 쓰기 권한 및 입력 제한 강화.
 
 Authentication에서 Email 로그인을 사용합니다. 이메일 확인을 켠 경우 가입 메일의 링크를 누른 뒤 로그인하세요. Authentication → URL Configuration에서 Site URL을 실제 Vercel 배포 주소로 지정하고 Redirect URLs에 아래 주소를 등록합니다.
 
@@ -37,6 +38,8 @@ DBML 내보내기는 원문만 포함합니다. 배치·관계선 색상까지 �
 
 클라우드는 `diagrams`, `diagram_folders`에 문서를 저장합니다. ERD 안의 테이블을 실제 DB에 생성하거나 SQL을 실행하지 않습니다. RLS와 트랜잭션 함수의 사용자 소유자 확인을 사용합니다. 여러 기기 저장 충돌은 목록 revision으로 감지하며 자동 병합하지 않습니다.
 
-첨부 예제 `public/yulchon-board.dbml`은 배포하면 접근 가능한 파일입니다.
+업무 예제는 `private-examples/`에 로컬 보관하며 Git과 공개 배포에서 제외합니다. 이전 Git 커밋에 포함했던 파일은 과거 기록에 남아 있을 수 있습니다.
 
-사용자 요청에 따라 이번 변경에 대한 실행·빌드·테스트는 수행하지 않았습니다.
+`npm test`로 파서·오류 위치·문서 전환·가져오기 검증·로컬 PostgreSQL 권한/저장 회귀 테스트를 실행합니다. `npm run typecheck`, `npm run build`로 타입과 배포 빌드를 확인합니다. 로컬 DB 테스트는 PGlite를 사용하며 실제 Supabase 데이터에는 접근하지 않습니다.
+
+편집기에서 오류에는 빨간 밑줄과 줄 번호 옆 표시가 나타납니다. 표시 위에 마우스를 올리면 오류 설명을 볼 수 있습니다. 문법 오류가 있는 동안 마지막 정상 관계도를 유지합니다.
